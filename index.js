@@ -9,6 +9,8 @@ const {hash, compare} = require("./utils/bc.js");
 var cookieSession = require('cookie-session');
 ////////////////////////////////--CSRF----/////////////////////////////////////
 const csurf = require('csurf');
+////////////////////////////--SES Send Email-/////////////////////////////////////
+const { sendEmail } = require('./ses.js');
 
 //////////////////////////////////////////////////
 //      EXPRESS STATIC,COMPRESSION,JSON         //
@@ -49,18 +51,11 @@ if (process.env.NODE_ENV != 'production') {
 } else {
     app.use('/bundle.js', (req, res) => res.sendFile(`${__dirname}/bundle.js`));
 }
-////////////////////////////////////////////////////////////////////////////////
-//                       \/DO NOT TOUCH OR CHANGE\/                           //
-// /////////////////////////////////////////////////////////////////////////////
-app.get('*', function(req, res) {
-    res.sendFile(__dirname + '/index.html');
-});
 
 ////////////////////////////////////////////////////////////////////////////////
 //                              GET - ROUTES                                 //
 // /////////////////////////////////////////////////////////////////////////////
 app.get('/welcome', (req, res) => {
-    console.log(req.session);
     if (req.session.userId) {
         res.redirect("/");
     } else {
@@ -72,7 +67,6 @@ app.get('/welcome', (req, res) => {
 // /////////////////////////////////////////////////////////////////////////////
 app.post("/login", (req, res) => {
     const {email, password} = req.body;
-
     database.getPassword(email)
         .then(results =>{
             //Compare() to check if Password is correct
@@ -83,7 +77,7 @@ app.post("/login", (req, res) => {
             compare(password, results.rows[0].hash_password).then( results =>{
                 if (results) {
                     //If result retrun True - forward to Petition
-                    res.redirect('/welcome');
+                    res.json(results);
                 } else {
                     //if results return false - reload with error message
                     req.session = null;
@@ -120,13 +114,16 @@ app.post("/registration", (req, res) => {
 });
 
 
-
-
-
-
-
-
-
+////////////////////////////////////////////////////////////////////////////////
+//                       \/DO NOT TOUCH OR CHANGE\/                           //
+// /////////////////////////////////////////////////////////////////////////////
+app.get('*', function(req, res) {
+    if (!req.session.userId) {
+        res.redirect("/welcome");
+    } else {
+        res.sendFile(__dirname + "/index.html");
+    }
+});
 ////////////////////////////////////////////////////////////////////////////////
 //                            Start the Engine                                //
 // /////////////////////////////////////////////////////////////////////////////

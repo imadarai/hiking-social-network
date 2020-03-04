@@ -2,6 +2,7 @@
 import React from 'react';
 import axios from './axios';
 import { Link } from 'react-router-dom';
+var validator = require("email-validator");
 
 export default class Registration extends React.Component {
     constructor () {
@@ -18,30 +19,34 @@ export default class Registration extends React.Component {
     }
     registerUser (e) {
         e.preventDefault();
-        console.log(this.state);
+        let isEmailValid = validator.validate(this.state.email);
 
-        if (this.state.first && this.state.last && this.state.email && this.state.password) {
-            axios.post("/registration", this.state).then(function(response){
-                console.log('Response from server after db.createUser', response.data);
-                if (response.data.id) {
-                    location.replace('/');
-                }
-            }).catch(err => {
-                console.log("Err in axios POST request /registration: ", err);
-                this.setState({error: "Email already exist.  Please login"});
-            });
-        }
-        if (!this.state.first){
-            this.setState({error: "First Name is required"});
-        }
-        if (!this.state.last){
-            this.setState({error: "Last Name is required"});
-        }
-        if (!this.state.email){
-            this.setState({error: "Email is required"});
-        }
-        if (!this.state.password){
-            this.setState({error: "Password is required"});
+        if (isEmailValid){
+            if (this.state.first && this.state.last && this.state.email && this.state.password) {
+
+                axios.post("/registration", this.state).then(function(response){
+                    if (response.data.id) {
+                        location.replace('/');
+                    }
+                }).catch(err => {
+                    console.log("Err in axios POST request /registration: ", err);
+                    this.setState({error: "Email already exist.  Please login"});
+                });
+            }
+            if (!this.state.first){
+                this.setState({error: "First Name is required"});
+            }
+            if (!this.state.last){
+                this.setState({error: "Last Name is required"});
+            }
+            if (!this.state.email){
+                this.setState({error: "Email is required"});
+            }
+            if (!this.state.password){
+                this.setState({error: "Password is required"});
+            }
+        } else {
+            this.setState({error: "Please enter a valid Email Address"});
         }
     }
     render () {

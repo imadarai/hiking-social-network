@@ -17,16 +17,12 @@ export default class Login extends React.Component {
     }
     loginUser (e) {
         e.preventDefault();
-        console.log(this.state);
-
         if (this.state.email && this.state.password) {
             axios.post("/login", this.state).then(function(response){
-                console.log('Response from server after db.loginUser', response.data);
-                if (response.data.id) {
+                if (response) {
                     location.replace('/');
                 }
-            }).catch(err => {
-                console.log("Err in axios POST request /login: ", err);
+            }).catch(() => {
                 this.setState({error: "Incorrect password, please try agian"});
             });
         }
@@ -41,7 +37,7 @@ export default class Login extends React.Component {
     render () {
         return (
             <div>
-                <h1>Login Info</h1>
+                <h1>Login</h1>
                 <p> { this.state.error } </p>
                 <form>
                     <input onChange={this.handleChange} name="email" type ="email" placeholder="Email" required/>

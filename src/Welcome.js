@@ -3,6 +3,7 @@ import React from 'react';
 import Registration from "./registration";
 import { HashRouter, Route } from 'react-router-dom';
 import Login from './login';
+import ResetPassword from './reset';
 
 
 export default function Welcome() {
@@ -18,3 +19,4 @@ export default function Welcome() {
         </div>
     );
 }
+// <Route component={ResetPassword} path="/reset" />
