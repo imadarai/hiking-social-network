@@ -53,9 +53,6 @@ export default class ResetPassword extends React.Component {
         if (this.state.password != this.state.repeatpassword) {
             this.setState({error: "Password does not Match.  Please try again"});
         }
-        else {
-            this.setState({error: "Something went wrong.  Please try again"});
-        }
     }
 
     render() {
@@ -64,29 +61,34 @@ export default class ResetPassword extends React.Component {
             <div>
                 { currentDisplay == 1 &&
                     <div>
-                        <h1>Forgot your password?</h1>
-                        <h1>Enter your Email below to reset</h1>
-                        <p className="error"> { this.state.error } </p>
-                        <form>
-                            <input onChange={this.handleChange} type="text" name="email" placeholder="Email"/>
-                            <button onClick={this.sendCode}>RESET PASSWORD</button>
-                        </form>
+                        <div className ="auth-container">
+                            <h2>Reset Password</h2>
+                            <p className="error"> { this.state.error } </p>
+                            <form className = "form-container">
+                                <input onChange={this.handleChange} type="text" name="email" placeholder="Email"/>
+                                <button className="simpleButton"  onClick={this.sendCode}>RESET PASSWORD</button>
+                            </form>
+                        </div>
                     </div>}
                 { currentDisplay == 2 &&
                     <div>
-                        <h2>Check your Email and Enter the Code below</h2>
-                        <p className="error"> { this.state.error } </p>
-                        <form>
-                            <input onChange={this.handleChange} type="text" name="secretcode" placeholder="Reset Code"/>
-                            <input onChange={this.handleChange} type="password" name="password" placeholder="Password"/>
-                            <input onChange={this.handleChange} type="password" name="repeatpassword" placeholder="Re-enter Password"/>
-                            <button onClick={this.resetPassword}>Submit</button>
-                        </form>
+                        <div className ="auth-container">
+                            <h2>Check your Email and Enter the Code below</h2>
+                            <p className="error"> { this.state.error } </p>
+                            <form className = "form-container">
+                                <input onChange={this.handleChange} type="text" name="secretcode" placeholder="Reset Code"/>
+                                <input onChange={this.handleChange} type="password" name="password" placeholder="Password"/>
+                                <input onChange={this.handleChange} type="password" name="repeatpassword" placeholder="Re-enter Password"/>
+                                <button className="simpleButton" onClick={this.resetPassword}>Submit</button>
+                            </form>
+                        </div>
                     </div>}
                 { currentDisplay == 3 &&
                     <div>
-                        <h1>Your Password has been succesfully updated.</h1>
-                        <Link to="/login">Log in</Link>
+                        <div className ="auth-container">
+                            <h2>Your Password has been succesfully updated.</h2>
+                            <Link to="/login">Log in</Link>
+                        </div>
                     </div>}
             </div>
         );

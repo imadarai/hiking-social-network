@@ -8,11 +8,26 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    background-color:#28538c
+    /* background-image: url(/images/background.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center; */
+    background-color:#28538c;
 }
 h1 {
     font-family: 'Tajawal', sans-serif;
     color:#fdda00;
+    text-align: center;
+}
+h2 {
+    font-family: 'Tajawal', sans-serif;
+    color:#28538c;
+    text-align: center;
+    padding-top: 10px;
+}
+p.error {
+    color: red;
+    font-size: 12px;
     text-align: center;
 }
 header {
@@ -29,4 +44,40 @@ main {
     display: flex;
     flex-direction: row;
     justify-content: center;
+}
+div.auth-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color:whitesmoke;
+    border-radius: 20px;
+    /* -webkit-box-shadow: 0px 0px 69px 15px rgba(253,218,0,1);
+    -moz-box-shadow: 0px 0px 69px 15px rgba(253,218,0,1);
+    box-shadow: 0px 0px 69px 15px rgba(253,218,0,1); */
+}
+form.form-container {
+    display: flex;
+    flex-direction: column;
+
+    padding:10px;
+}
+input {
+    text-align: center;
+    font-size: 14px;
+    width: 150px;
+    border: 0;
+    border-bottom: 2px solid #fdda00;
+    outline: 0;
+    color: #28538c;
+    padding: 5px 0;
+    background: transparent;
+    margin-right: 5px;
+}
+button.simpleButton {
+    background-color:#28538c;
+    color: whitesmoke;
+    float: right;
+    margin-top: 5px;
+    margin-right: 1px;
 }
