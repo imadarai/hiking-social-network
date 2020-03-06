@@ -14,6 +14,7 @@ export default function Welcome() {
                 <div>
                     <Route exact component={Registration} path="/" />
                     <Route component={Login} path="/login" />
+                    <Route exact component={ResetPassword} path="/reset" />
                 </div>
             </HashRouter>
         </div>

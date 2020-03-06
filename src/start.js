@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Welcome from './Welcome';
+import App from "./app";
 
 
 
@@ -13,6 +14,7 @@ if (location.pathname === "/welcome") {
 } else {
     //render the logo
     component = <p>logo</p>;
+    //<App /> replace with Logo after done with Reser Pass
 
 }
 

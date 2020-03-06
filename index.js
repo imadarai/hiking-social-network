@@ -4,13 +4,15 @@ const app = express();
 const compression = require('compression');
 ////////////////////////////////--UTILS--//////////////////////////////////////
 const database = require('./utils/db.js');
-const {hash, compare} = require("./utils/bc.js");
+const { hash, compare } = require("./utils/bc.js");
 ////////////////////////////--Cookie Session/////////////////////////////////////
 var cookieSession = require('cookie-session');
 ////////////////////////////////--CSRF----/////////////////////////////////////
 const csurf = require('csurf');
 ////////////////////////////--SES Send Email-/////////////////////////////////////
 const { sendEmail } = require('./ses.js');
+/////////////////////////--RESET PASSWORD CODE-//////////////////////////////////
+const cryptoRandomString = require('crypto-random-string');
 
 //////////////////////////////////////////////////
 //      EXPRESS STATIC,COMPRESSION,JSON         //
@@ -65,6 +67,7 @@ app.get('/welcome', (req, res) => {
 ////////////////////////////////////////////////////////////////////////////////
 //                              POST - ROUTES                                 //
 // /////////////////////////////////////////////////////////////////////////////
+////////////////////////////////--LOGIN--/////////////////////////////////////
 app.post("/login", (req, res) => {
     const {email, password} = req.body;
     database.getPassword(email)
@@ -90,9 +93,7 @@ app.post("/login", (req, res) => {
             res.redirect (500, "/login");
         });
 });
-
-
-
+////////////////////////////////--REGISTRATION--/////////////////////////////////////
 app.post("/registration", (req, res) => {
     const {first, last, email, password} = req.body;
     hash(password)
@@ -112,8 +113,32 @@ app.post("/registration", (req, res) => {
                 });
         }).catch(err => console.log("Err in hashing passowrd: ", err));
 });
+////////////////////////////////--RESET-PASS--/////////////////////////////////////
+app.post("/resetpassword/start", (req, res) => {
+    const { email } = req.body;
+    database.selectUserToResetPass(email).then( results => {
 
-
+        if (results.rows[0]) {
+            const secretCode =  cryptoRandomString({length: 6});
+            database.insdertSecretCode(email, secretCode)
+                .then(() => {
+                    let message = `We received a request to reset your password.  Here is your reset code: ${secretCode}`;
+                    sendEmail(email, "Password Reset Code from Annapurna", message);
+                    res.json({success: true});
+                })
+                .catch(err => console.log("Err in database.insdertSecretCode:", err));
+        } else {
+            res.redirect(500, "/reset");
+        }
+    }).catch(err =>{
+        res.redirect(500, "/reset");
+        console.log("error in selectUserToResetPass", err);
+    });
+});
+app.post("/resetpassword/verify", (req, res) => {
+    const {secretCode, email, password} = req.body;
+    console.log(secretCode, email, password);
+});
 ////////////////////////////////////////////////////////////////////////////////
 //                       \/DO NOT TOUCH OR CHANGE\/                           //
 // /////////////////////////////////////////////////////////////////////////////

@@ -26,3 +26,21 @@ module.exports.getPassword = function(email) {
         [email]
     );
 };
+///////////////////////////////////////////////////////////////////////////////
+//                       SELECT USERT FOR RESET PASS                         //
+///////////////////////////////////////////////////////////////////////////////
+module.exports.selectUserToResetPass = function(email) {
+    return db.query(
+        `SELECT * FROM users WHERE email = $1`,
+        [email]
+    );
+};
+///////////////////////////////////////////////////////////////////////////////
+//                 INSERT SECRET CODE IN PASSWORD_RESET_CODE                 //
+///////////////////////////////////////////////////////////////////////////////!
+module.exports.insdertSecretCode = function(email, code) {
+    return db.query(
+        `INSERT INTO password_reset_codes (email, code) VALUES ($1, $2)`,
+        [email, code]
+    );
+};

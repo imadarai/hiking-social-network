@@ -15,7 +15,7 @@ const ses = new aws.SES({
 
 exports.sendEmail = function(to, subject, message) {
     return ses.sendEmail({
-        Source: 'Annapurna Social Network <arain.imad@gmail.com>',
+        Source: 'Annapurna <arain.imad@gmail.com>',
         Destination: {
             ToAddresses: [to]
         },
@@ -30,8 +30,8 @@ exports.sendEmail = function(to, subject, message) {
             }
         }
     }).promise().then(
-        () => console.log('it worked!')
+        () => console.log("Email was sent out!")
     ).catch(
-        err => console.log(err)
+        err => console.log("Err in sendEmail in ses.js: ", err)
     );
 };
