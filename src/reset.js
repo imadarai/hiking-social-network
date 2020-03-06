@@ -41,10 +41,19 @@ export default class ResetPassword extends React.Component {
         e.preventDefault();
         if (this.state.secretcode && this.state.password && (this.state.password === this.state.repeatpassword)) {
             console.log(this.state);
-            axios.post("/resetpassword/verify", this.state )
-                //PICKUP HERE
-                .catch(err => console.log("Err in POST /resetpassword/verify in reset.js", err));
-        } else {
+            axios.post("/resetpassword/verify", this.state ).then (results => {
+                if (results) {
+                    this.setState({currentDisplay: 3});
+                }
+            }).catch(err => {
+                this.setState({error: "Invalid Code. Please Try Again."});
+                console.log("Err in POST /resetpassword/verify in reset.js", err);
+            });
+        }
+        if (this.state.password != this.state.repeatpassword) {
+            this.setState({error: "Password does not Match.  Please try again"});
+        }
+        else {
             this.setState({error: "Something went wrong.  Please try again"});
         }
     }
@@ -76,7 +85,7 @@ export default class ResetPassword extends React.Component {
                     </div>}
                 { currentDisplay == 3 &&
                     <div>
-                        <h1>Password reset has been successfull!</h1>
+                        <h1>Your Password has been succesfully updated.</h1>
                         <Link to="/login">Log in</Link>
                     </div>}
             </div>

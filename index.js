@@ -64,6 +64,10 @@ app.get('/welcome', (req, res) => {
         res.sendFile(__dirname + "/index.html");
     }
 });
+app.get("/logout", (req, res) => {
+    req.session = null;
+    res.redirect("/welcome");
+});
 ////////////////////////////////////////////////////////////////////////////////
 //                              POST - ROUTES                                 //
 // /////////////////////////////////////////////////////////////////////////////
@@ -136,8 +140,20 @@ app.post("/resetpassword/start", (req, res) => {
     });
 });
 app.post("/resetpassword/verify", (req, res) => {
-    const {secretCode, email, password} = req.body;
-    console.log(secretCode, email, password);
+    const {secretcode, email, password} = req.body;
+    database.secretCodeMatch(secretcode).then(results => {
+        if(results.rows[0]){
+            hash(password)
+                .then(hashedPassword => {
+                    database.updatePassword(email,hashedPassword)
+                        .then(() => {
+                            res.json({success: true});
+                        }).catch(err =>console.log("error in updatePassword DB request:", err));
+                }).catch(err => console.log("Err in hashing passowrd on /resetpassword route: ", err));
+        } else {
+            res.redirect(500, "/reset");
+        }
+    }).catch(err =>console.log("error in secretCodeMatch", err));
 });
 ////////////////////////////////////////////////////////////////////////////////
 //                       \/DO NOT TOUCH OR CHANGE\/                           //

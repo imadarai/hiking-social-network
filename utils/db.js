@@ -44,3 +44,22 @@ module.exports.insdertSecretCode = function(email, code) {
         [email, code]
     );
 };
+///////////////////////////////////////////////////////////////////////////////
+//                 MATCH SECRET CODE ENTERE ON PASSWORD RESET                 //
+///////////////////////////////////////////////////////////////////////////////!
+module.exports.secretCodeMatch = function(code) {
+    return db.query(
+        `SELECT id FROM password_reset_codes
+        WHERE CURRENT_TIMESTAMP - created_at < INTERVAL '10 minutes' AND code =$1`,
+        [code]
+    );
+};
+///////////////////////////////////////////////////////////////////////////////
+//                 UPDATE PASSWORD UPON CODE MATCH                 //
+///////////////////////////////////////////////////////////////////////////////!
+module.exports.updatePassword = function(email, hashpassword) {
+    return db.query(
+        `UPDATE users SET hash_password = $2 WHERE email = $1`,
+        [email, hashpassword]
+    );
+};
