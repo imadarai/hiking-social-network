@@ -13,8 +13,35 @@ const db = spicedPg(process.env.DATABASE_URL || `postgres://postgres:postgres@lo
 ///////////////////////////////////////////////////////////////////////////////
 module.exports.createUser = function (first, last, email, hashedPassword) {
     return db.query(
-        'INSERT INTO users (first, last, email, hash_password) VALUES ($1, $2, $3, $4) RETURNING id, first, last, email',
+        'INSERT INTO users (first, last, email, password) VALUES ($1, $2, $3, $4) RETURNING id, first, last, email',
         [first, last, email, hashedPassword],
+    );
+};
+///////////////////////////////////////////////////////////////////////////////
+//                              GET USER BY ID                               //
+///////////////////////////////////////////////////////////////////////////////
+module.exports.getUserByID = function(id) {
+    return db.query(
+        `SELECT first, last, email, image_url, bio FROM users WHERE id = $1`,
+        [id]
+    );
+};
+///////////////////////////////////////////////////////////////////////////////
+//                     INSERT PROFILE PIC FROM S3 UPLOAD                     //
+///////////////////////////////////////////////////////////////////////////////
+module.exports.insertProfilePic = function (id, url) {
+    return db.query(
+        `UPDATE users SET image_url = $2 WHERE id = $1`,
+        [id, url]
+    );
+};
+///////////////////////////////////////////////////////////////////////////////
+//                                UPDATE USER BIO                            //
+///////////////////////////////////////////////////////////////////////////////
+module.exports.updateUserBio = function(id, bio) {
+    return db.query(
+        `UPDATE users SET bio = $2 WHERE id = $1 Returning bio`,
+        [id, bio]
     );
 };
 ///////////////////////////////////////////////////////////////////////////////
@@ -22,7 +49,7 @@ module.exports.createUser = function (first, last, email, hashedPassword) {
 ///////////////////////////////////////////////////////////////////////////////
 module.exports.getPassword = function(email) {
     return db.query(
-        `SELECT id, first, last, hash_password FROM users WHERE email = $1`,
+        `SELECT id, first, last, password FROM users WHERE email = $1`,
         [email]
     );
 };
@@ -59,7 +86,7 @@ module.exports.secretCodeMatch = function(code) {
 ///////////////////////////////////////////////////////////////////////////////!
 module.exports.updatePassword = function(email, hashpassword) {
     return db.query(
-        `UPDATE users SET hash_password = $2 WHERE email = $1`,
+        `UPDATE users SET password = $2 WHERE email = $1`,
         [email, hashpassword]
     );
 };

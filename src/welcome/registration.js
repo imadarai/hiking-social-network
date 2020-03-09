@@ -1,6 +1,6 @@
 // src/Registration.js
 import React from 'react';
-import axios from './axios';
+import axios from '../axios';
 import { Link } from 'react-router-dom';
 var validator = require("email-validator");
 

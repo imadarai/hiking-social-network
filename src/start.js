@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Welcome from './Welcome';
-import App from "./app";
+import Welcome from './welcome/Welcome';
+import App from "./app/app";
 
 
 
@@ -12,10 +12,7 @@ if (location.pathname === "/welcome") {
     component = <Welcome />;
 
 } else {
-    //render the logo
-    component = <p>logo</p>;
-    //<App /> replace with Logo after done with Reser Pass
-
+    component = <App />;
 }
 
 

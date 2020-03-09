@@ -14,6 +14,32 @@ const { sendEmail } = require('./ses.js');
 /////////////////////////--RESET PASSWORD CODE-//////////////////////////////////
 const cryptoRandomString = require('crypto-random-string');
 
+
+///////////////////////////////////////////////////////////////////////////////
+//                FILE UPLOAD BOILERPLATE CODE WITH MULTER                   //
+// /////////////////////////////////////////////////////////////////////////////
+const s3 = require("./s3.js");
+const config = require("./config.json");
+const multer = require('multer');
+const uidSafe = require('uid-safe');
+const path = require('path');
+
+const diskStorage = multer.diskStorage({
+    destination: function (req, file, callback) {
+        callback(null, __dirname + '/uploads');
+    },
+    filename: function (req, file, callback) {
+        uidSafe(24).then(function(uid) {
+            callback(null, uid + path.extname(file.originalname));
+        });
+    }
+});
+const uploader = multer({
+    storage: diskStorage,
+    limits: {
+        fileSize: 2097152
+    }
+});
 //////////////////////////////////////////////////
 //      EXPRESS STATIC,COMPRESSION,JSON         //
 // ///////////////////////////////////////////////
@@ -57,6 +83,7 @@ if (process.env.NODE_ENV != 'production') {
 ////////////////////////////////////////////////////////////////////////////////
 //                              GET - ROUTES                                 //
 // /////////////////////////////////////////////////////////////////////////////
+//////////////////////////--WELCOME.JS ROUTING--///////////////////////////////
 app.get('/welcome', (req, res) => {
     if (req.session.userId) {
         res.redirect("/");
@@ -64,9 +91,26 @@ app.get('/welcome', (req, res) => {
         res.sendFile(__dirname + "/index.html");
     }
 });
+////////////////////////////////--LOUGOUT--/////////////////////////////////////
 app.get("/logout", (req, res) => {
     req.session = null;
     res.redirect("/welcome");
+});
+/////////////////////////--APP.JS Get USER BY ID--///////////////////////////////
+app.get("/user/info", async (req,res) => {
+    try {
+        let results = await database.getUserByID(req.session.userId);
+        res.json({
+            userId: req.session.userId,
+            first: results.rows[0].first,
+            last: results.rows[0].last,
+            email: results.rows[0].email,
+            profilePic: results.rows[0].image_url,
+            bio: results.rows[0].bio
+        });
+    } catch(err) {
+        console.log("ERR IN GETTING USER BY ID INDEX.JS: ", err);
+    }
 });
 ////////////////////////////////////////////////////////////////////////////////
 //                              POST - ROUTES                                 //
@@ -81,7 +125,7 @@ app.post("/login", (req, res) => {
             req.session.userId = results.rows[0].id;
             req.session.first = results.rows[0].first;
             req.session.last = results.rows[0].last;
-            compare(password, results.rows[0].hash_password).then( results =>{
+            compare(password, results.rows[0].password).then( results =>{
                 if (results) {
                     //If result retrun True - forward to Petition
                     res.json(results);
@@ -154,6 +198,29 @@ app.post("/resetpassword/verify", (req, res) => {
             res.redirect(500, "/reset");
         }
     }).catch(err =>console.log("error in secretCodeMatch", err));
+});
+///////////////////////--UPLOAD PROFILE PICTURE--///////////////////////////////
+app.post("/user/update-profile-pic", uploader.single("file"), s3.upload, async (req, res) => {
+    try {
+        const {id} = req.body;
+        const url = config.s3Url + req.file.filename;
+        await database.insertProfilePic(id, url);
+        res.json ({url: url});
+    } catch (err) {
+        console.log("Err in /insertProfilePic in index.js: ", err);
+    }
+});
+/////////////////////////////--UPDATE BIO INFO--////////////////////////////////
+app.post("/user/updatebio", async (req, res) => {
+    try {
+        const { bio } = req.body;
+        console.log(req.body);
+        const {rows} = await database.updateUserBio(req.session.userId, bio);
+        console.log(rows);
+        res.json({bio: rows[0].bio});
+    } catch (err) {
+        console.log("Err in database.updateUserBio route in Index.js: ", err);
+    }
 });
 ////////////////////////////////////////////////////////////////////////////////
 //                       \/DO NOT TOUCH OR CHANGE\/                           //
