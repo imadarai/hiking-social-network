@@ -213,10 +213,8 @@ app.post("/user/update-profile-pic", uploader.single("file"), s3.upload, async (
 /////////////////////////////--UPDATE BIO INFO--////////////////////////////////
 app.post("/user/updatebio", async (req, res) => {
     try {
-        const { bio } = req.body;
-        console.log(req.body);
-        const {rows} = await database.updateUserBio(req.session.userId, bio);
-        console.log(rows);
+        const { newBio } = req.body;
+        const {rows} = await database.updateUserBio(req.session.userId, newBio);
         res.json({bio: rows[0].bio});
     } catch (err) {
         console.log("Err in database.updateUserBio route in Index.js: ", err);

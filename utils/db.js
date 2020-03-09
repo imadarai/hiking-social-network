@@ -40,7 +40,7 @@ module.exports.insertProfilePic = function (id, url) {
 ///////////////////////////////////////////////////////////////////////////////
 module.exports.updateUserBio = function(id, bio) {
     return db.query(
-        `UPDATE users SET bio = $2 WHERE id = $1 Returning bio`,
+        `UPDATE users SET bio = $2 WHERE id = $1 RETURNING bio`,
         [id, bio]
     );
 };
