@@ -1,9 +1,11 @@
 import React from "react";
 import axios from "../axios";
+import { BrowserRouter, Route } from 'react-router-dom';
 import Profile from "./Profile.js";
 import ProfilePic from "./ProfilePic.js";
 import Uploader from "./Uploader.js";
 import BioEditor from "./BioEditor.js";
+import OtherProfile from "./OtherProfile.js";
 
 export default class App extends React.Component {
     constructor(props) {
@@ -15,7 +17,6 @@ export default class App extends React.Component {
         try {
             const { data } = await axios.get("/user/info");
             this.setState(data);
-            console.log(data);
         } catch (err) {
             console.log("Error in getting User Information axios use/info: ",  err);
         }
@@ -27,31 +28,48 @@ export default class App extends React.Component {
         }
         return (
             <div>
-                <h1>Welcome!</h1>
-                <Profile
-                    first = {this.state.first}
-                    last = {this.state.last}
+                <BrowserRouter>
+                    <Route
+                        exact path="/"
+                        render={() => {
+                            return (
+                                <div>
+                                    <h1>Welcome!</h1>
+                                    <Profile
+                                        first = {this.state.first}
+                                        last = {this.state.last}
 
-                    profilePic ={
-                        <ProfilePic
-                            first ={this.state.first}
-                            last = {this.state.last}
-                            url = {this.state.profilePic}
-                            openUploader={() => this.setState({
-                                uploaderVisible: true
-                            })}
-                        />
-                    }
-                    bioEditor={
-                        <BioEditor
-                            bio={this.state.bio}
-                            setBio={newBio => this.setState({
-                                bio: newBio
-                            })}
-                        />
-                    }
-                />
-                {this.state.uploaderVisible &&
+                                        profilePic ={
+                                            <ProfilePic
+                                                first ={this.state.first}
+                                                last = {this.state.last}
+                                                url = {this.state.profilePic}
+                                                openUploader={() => this.setState({
+                                                    uploaderVisible: true
+                                                })}
+                                            />
+                                        }
+                                        bioEditor={
+                                            <BioEditor
+                                                bio={this.state.bio}
+                                                setBio={newBio => this.setState({
+                                                    bio: newBio
+                                                })}
+                                            />
+                                        }
+                                    />
+                                </div>
+                            );
+                        }}
+                    />
+                    <Route
+                        path="/userprofile/:id"
+                        render={props => (
+                            <OtherProfile {...props} key={props.match.url} />
+                        )}
+                    />
+                </BrowserRouter>
+                { this.state.uploaderVisible &&
                         <Uploader
                             id={this.state.userId}
                             updateImage={url => this.setState({
@@ -60,7 +78,8 @@ export default class App extends React.Component {
                             closeUploaderModal={ () => this.setState({
                                 uploaderVisible: false
                             })}
-                        />}
+                        />
+                }
             </div>
         );
     }

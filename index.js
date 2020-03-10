@@ -112,6 +112,36 @@ app.get("/user/info", async (req,res) => {
         console.log("ERR IN GETTING USER BY ID INDEX.JS: ", err);
     }
 });
+///////////////////--USERPROFILE Request 'other profile'--//////////////////////
+app.get("/api/userprofile/:id", async (req,res) => {
+    try {
+        //if the user is tryign to go to their own page
+        if (req.params.id == req.session.userId) {
+            res.json({ error: true });
+        }
+        //if the provided route is not a number
+        if (isNaN(req.params.id)) {
+            res.json({
+                error: true
+            });
+        }
+        //if the req.param is an ID
+        let {rows} = await database.getUserByID(req.params.id);
+        console.log("Results from getUserbyID from database in /userprofile by ID: ", rows[0].first);
+        res.json({
+            userId: req.params.id,
+            first: rows[0].first,
+            last: rows[0].last,
+            profilePic: rows[0].image_url,
+            bio: rows[0].bio
+        });
+    } catch(err) {
+        console.log("Err in Getting /userprofile/:id: ", err);
+        res.json({
+            error: true
+        });
+    }
+});
 ////////////////////////////////////////////////////////////////////////////////
 //                              POST - ROUTES                                 //
 // /////////////////////////////////////////////////////////////////////////////
