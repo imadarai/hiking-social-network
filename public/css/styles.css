@@ -45,8 +45,9 @@ img.loading {
     height: 100px;
 }
 img.profile-pic {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
 }
 main {
     display: flex;
@@ -81,6 +82,9 @@ input {
     padding: 5px 0;
     background: transparent;
     margin-right: 5px;
+}
+input.search {
+    color: white;
 }
 button.simpleButton {
     background-color:#28538c;

@@ -1,5 +1,5 @@
 import React from "react";
-import App from "./App.js";
+import App from "../App.js";
 import axios from "../axios";
 import {render, waitForElement} from "@testing-library/react";
 

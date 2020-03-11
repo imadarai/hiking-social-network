@@ -1,6 +1,7 @@
 //component showing the entirety of other person's profile
 import React from "react";
 import axios from "../axios";
+import ProfilePic from "./ProfilePic";
 
 
 export default class OtherProfile extends React.Component {
@@ -11,7 +12,6 @@ export default class OtherProfile extends React.Component {
     async componentDidMount() {
         try {
             let {data} = await axios.get(`/api/userprofile/${this.props.match.params.id}`);
-            console.log("Response from server in OtherProfile: ", data);
             if (data.error) {
                 this.props.history.push('/');
             } else {
@@ -27,37 +27,13 @@ export default class OtherProfile extends React.Component {
         }
         return(
             <div className="public-profile-container">
-                <img className="profile-pic"
-                    src={this.state.profilePic || "../images/profilepic.png"}
-                    alt={`${this.state.first} ${this.state.last}`}
+                <ProfilePic
+                    first ={this.state.first}
+                    last = {this.state.last}
+                    url = {this.state.profilePic}
                 />
-                <p>{this.state.first} {this.state.last}</p>
                 <p>{this.state.bio}</p>
             </div>
         );
     }
 }
-
-//CLASS CODE ALONG
-// import React from "react";
-// import axios from "./axios";
-//
-//
-// export default class OtherProfile extends React.Component {
-//     constructor (props) {
-//         super(props);
-//         this.state = {};
-//     }
-//
-//     componentDidMount() {
-//         axios.get(`/user/${this.props.match.params.id}.json`).then (
-//             ({data}) => this.setState();
-//         )
-//     }
-//     render () {
-//         return (
-//             <div>
-//             </div>
-//         )
-//     }
-// }

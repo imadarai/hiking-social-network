@@ -1,5 +1,5 @@
 import React from "react";
-import ProfilePic from "./profilepic.js";
+import ProfilePic from "../profilepic.js";
 import {render, fireEvent} from "@testing-library/react";
 
 

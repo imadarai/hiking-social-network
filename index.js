@@ -127,7 +127,6 @@ app.get("/api/userprofile/:id", async (req,res) => {
         }
         //if the req.param is an ID
         let {rows} = await database.getUserByID(req.params.id);
-        console.log("Results from getUserbyID from database in /userprofile by ID: ", rows[0].first);
         res.json({
             userId: req.params.id,
             first: rows[0].first,
@@ -140,6 +139,30 @@ app.get("/api/userprofile/:id", async (req,res) => {
         res.json({
             error: true
         });
+    }
+});
+/////////////////////////////--SEARCH USERS--//////////////////////////////////
+app.get("/api/usersearch/:searchTerm", async (req, res) => {
+    let searchTerm = req.params.searchTerm;
+    console.log(searchTerm);
+    if (!searchTerm || searchTerm == " ") {
+        try {
+            const lastestUsers = await database.getLatestUsers(req.session.userId);
+            console.log(lastestUsers);
+            res.json({ users: lastestUsers.rows });
+        } catch (err) {
+            console.log("Err in getLatestUsers DB request: ", err);
+        }
+    } else {
+        try {
+            const userArr = await database.searchUsers(
+                Number(req.session.userId),
+                searchTerm
+            );
+            res.json({ users: userArr.rows });
+        } catch (err) {
+            console.log("Err in searchUsers DB request: ", err);
+        }
     }
 });
 ////////////////////////////////////////////////////////////////////////////////

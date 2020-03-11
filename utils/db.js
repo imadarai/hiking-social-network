@@ -90,3 +90,29 @@ module.exports.updatePassword = function(email, hashpassword) {
         [email, hashpassword]
     );
 };
+///////////////////////////////////////////////////////////////////////////////
+//                         GetLatestUsers for Search                        //
+///////////////////////////////////////////////////////////////////////////////!
+module.exports.getLatestUsers = function getLatestUsers(userid) {
+    return db.query(
+        `SELECT id, first, last, image_url FROM users WHERE id!=$1
+        ORDER BY id DESC LIMIT 6`,
+        [userid]
+    );
+};
+///////////////////////////////////////////////////////////////////////////////
+//                               userSearch                                   //
+///////////////////////////////////////////////////////////////////////////////!
+module.exports.searchUsers = function searchUsers(id, name) {
+    return db.query(
+        `SELECT id, first, last, image_url
+        FROM users
+        WHERE (first ILIKE $2
+        OR last ILIKE $2
+        OR email = $3)
+        AND (users.id <> $1)
+        ORDER BY last
+        LIMIT 10`,
+        [id, `%${name}%`, name]
+    );
+};

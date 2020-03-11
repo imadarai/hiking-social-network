@@ -6,6 +6,7 @@ import ProfilePic from "./ProfilePic.js";
 import Uploader from "./Uploader.js";
 import BioEditor from "./BioEditor.js";
 import OtherProfile from "./OtherProfile.js";
+import UserSearch from "./UserSearch";
 
 export default class App extends React.Component {
     constructor(props) {
@@ -62,12 +63,8 @@ export default class App extends React.Component {
                             );
                         }}
                     />
-                    <Route
-                        path="/userprofile/:id"
-                        render={props => (
-                            <OtherProfile {...props} key={props.match.url} />
-                        )}
-                    />
+                    <Route path="/userprofile/:id" component={OtherProfile} />
+                    <Route path="/usersearch" component={UserSearch} />
                 </BrowserRouter>
                 { this.state.uploaderVisible &&
                         <Uploader
