@@ -142,13 +142,11 @@ app.get("/api/userprofile/:id", async (req,res) => {
     }
 });
 /////////////////////////////--SEARCH USERS--//////////////////////////////////
-app.get("/api/usersearch/:searchTerm", async (req, res) => {
+app.get("/api/usersearch/:searchTerm?", async (req, res) => {
     let searchTerm = req.params.searchTerm;
-    console.log(searchTerm);
-    if (!searchTerm || searchTerm == " ") {
+    if (searchTerm === undefined) {
         try {
             const lastestUsers = await database.getLatestUsers(req.session.userId);
-            console.log(lastestUsers);
             res.json({ users: lastestUsers.rows });
         } catch (err) {
             console.log("Err in getLatestUsers DB request: ", err);

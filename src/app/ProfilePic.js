@@ -1,6 +1,10 @@
 import React from "react";
 
 export default function({url, first, last, openUploader}) {
+    // const setDefaultUrl = (e) => {
+    //     e.target.setAttribute("src", "../images/profilepic.png");
+    // };
+
     return (
         <div>
             <img className="profile-pic"

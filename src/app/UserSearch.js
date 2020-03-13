@@ -9,7 +9,6 @@ export default function UserSearch() {
     const [users, setUsers] = useState([]);
     const [search, setSearch] = useState("");
 
-
     useEffect(() => {
         var abort;
         let searchTerm = search;
