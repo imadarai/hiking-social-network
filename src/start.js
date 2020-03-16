@@ -24,7 +24,7 @@ if (location.pathname === "/welcome") {
 } else {
     component = (
         <Provider store={store}>
-            <App />;
+            <App />
         </Provider>
     );
 }

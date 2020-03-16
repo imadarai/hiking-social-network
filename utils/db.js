@@ -105,8 +105,7 @@ module.exports.getLatestUsers = function getLatestUsers(userid) {
 ///////////////////////////////////////////////////////////////////////////////!
 module.exports.searchUsers = function searchUsers(id, name) {
     return db.query(
-        `SELECT id, first, last, image_url
-        FROM users
+        `SELECT id, first, last, image_url FROM users
         WHERE (first ILIKE $2
         OR last ILIKE $2
         OR email = $3)
@@ -114,5 +113,56 @@ module.exports.searchUsers = function searchUsers(id, name) {
         ORDER BY last
         LIMIT 10`,
         [id, `%${name}%`, name]
+    );
+};
+///////////////////////////////////////////////////////////////////////////////
+//                              Friendship Request                           //
+///////////////////////////////////////////////////////////////////////////////!
+module.exports.getFriendship = function getFriendship(requestId, userId) {
+    return db.query(
+        `SELECT * FROM friendships
+        WHERE receiver_id=$1 AND sender_id=$2
+        OR receiver_id=$2 AND sender_id=$1`,
+        [requestId, userId]
+    );
+};
+///////////////////////////////////////////////////////////////////////////////
+//                                 checkRequest                               //
+///////////////////////////////////////////////////////////////////////////////!
+module.exports.checkRequestStatus = function checkRequestStatus( requestId, userId) {
+    return db.query(
+        `SELECT EXISTS (SELECT id FROM friendships WHERE receiver_id=$1 AND sender_id=$2
+        OR receiver_id=$2 AND sender_id=$1)`,
+        [requestId, userId]
+    );
+};
+///////////////////////////////////////////////////////////////////////////////
+//                              Send Friend Request                          //
+///////////////////////////////////////////////////////////////////////////////!
+module.exports.sendFriendRequest = function sendFriendRequest(requestId, userId) {
+    return db.query(
+        `INSERT INTO friendships (receiver_id, sender_id) VALUES($1, $2)`,
+        [requestId, userId]
+    );
+};
+///////////////////////////////////////////////////////////////////////////////
+//                              Send Friend Request                          //
+///////////////////////////////////////////////////////////////////////////////!
+module.exports.establishFriendship = function establishFriendship(requestId, userId) {
+    return db.query(
+        `UPDATE friendships SET accepted = true
+        WHERE receiver_id=$2 AND sender_id=$1`,
+        [requestId, userId]
+    );
+};
+///////////////////////////////////////////////////////////////////////////////
+//                            Delete Friend Request                          //
+///////////////////////////////////////////////////////////////////////////////!
+module.exports.deleteFriendship = function deleteFriendship(requestId, userId) {
+    return db.query(
+        `DELETE FROM friendships
+        WHERE receiver_id=$1 AND sender_id=$2
+        OR receiver_id=$2 AND sender_id=$1`,
+        [requestId, userId]
     );
 };

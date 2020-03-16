@@ -2,6 +2,7 @@
 import React from "react";
 import axios from "../axios";
 import ProfilePic from "./ProfilePic";
+import FriendRequest from "./FriendRequest.js";
 
 
 export default class OtherProfile extends React.Component {
@@ -33,6 +34,7 @@ export default class OtherProfile extends React.Component {
                     url = {this.state.profilePic}
                 />
                 <p>{this.state.bio}</p>
+                <FriendRequest requestId={this.props.match.params.id} />
             </div>
         );
     }
