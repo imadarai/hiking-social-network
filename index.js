@@ -13,6 +13,9 @@ const csurf = require('csurf');
 const { sendEmail } = require('./ses.js');
 /////////////////////////--RESET PASSWORD CODE-//////////////////////////////////
 const cryptoRandomString = require('crypto-random-string');
+/////////////////////////--Socket IO Requirements-//////////////////////////////////
+const server = require('http').Server(app);
+const io = require('socket.io')(server, { origins: 'localhost:8080' });
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -205,32 +208,34 @@ app.post("/friendStatus/:id", async (req, res) => {
             console.log(statusCheck);
             if (statusCheck.rows[0].exists == false) {
                 await database.sendFriendRequest(req.params.id,req.session.userId);
+                console.log("I'm in SendFriendRequest");
                 res.json({
                     friendship: "cancel",
                     buttonText: "Cancel Request"
                 });
             } else {
                 await database.establishFriendship(req.params.id, req.session.userId);
+                console.log("I'm in establishFrienship 1");
                 res.json({
                     friendship: true,
                     buttonText: "Disconnect"
                 });
             }
         } else if (
-            req.body.friendship == true ||
-            req.body.friendship == "cancel" ||
-            req.body.rejectFlag == "reject"
+            req.body.friendship === true
         ) {
             await database.deleteFriendship(req.params.id, req.session.userId);
+            console.log("I'm in deleteFrienship");
             res.json({
                 friendship: false,
                 buttonText: "Connect",
                 rejectText: false,
                 rejectFlag: false
             });
-        } else if (req.body.friendship == "pending") {
+        } else if (req.body.friendship === "pending") {
             // establish friendship end send "end friendship"
             await database.establishFriendship(req.params.id, req.session.userId);
+            console.log("I'm in establishFrienship 2");
             res.json({
                 success: true,
                 friendship: true,
@@ -362,3 +367,20 @@ app.get('*', function(req, res) {
 app.listen(8080, function() {
     console.log("Social Network is up!");
 });
+////////////////////////////////////////////////////////////////////////////////
+//                      socket.io event listenerm                             //
+// /////////////////////////////////////////////////////////////////////////////
+// io.on("connection", socket => {
+//     //connected
+//     console.log(
+//         `A socket with the id ${socket.id} just connected`
+//     );
+//     socket.emit("hellow", {
+//         message: "It is nice to see you"
+//     });
+//     socket.on('disconnect', () => {
+//         console.log(
+//             `A socket with the id ${socket.id} just disconnected`
+//         );
+//     });
+// });
