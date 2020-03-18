@@ -14,9 +14,8 @@ const csurf = require('csurf');
 /////////////////////////--RESET PASSWORD CODE-//////////////////////////////////
 // const cryptoRandomString = require('crypto-random-string');
 /////////////////////////--Socket IO Requirements-//////////////////////////////////
-// const server = require('http').Server(app);
-// const io = require('socket.io')(server, { origins: 'localhost:8080' });
-
+const server = require('http').Server(app);
+const io = require('socket.io')(server, { origins: 'localhost:8080' });
 
 ///////////////////////////////////////////////////////////////////////////////
 //                FILE UPLOAD BOILERPLATE CODE WITH MULTER                   //
@@ -56,10 +55,20 @@ app.use(express.urlencoded({extended: false}));
 //////////////////////////////////////////////////
 //               COOKIE SESSION                 //
 // ///////////////////////////////////////////////
-app.use(cookieSession({
+// app.use(cookieSession({
+//     secret: `I'm always angry.`,
+//     maxAge: 1000 * 60 * 60 * 24 * 14
+// }));
+
+const cookieSessionMiddleware = cookieSession({
     secret: `I'm always angry.`,
-    maxAge: 1000 * 60 * 60 * 24 * 14
-}));
+    maxAge: 1000 * 60 * 60 * 24 * 90
+});
+
+app.use(cookieSessionMiddleware);
+io.use(function(socket, next) {
+    cookieSessionMiddleware(socket.request, socket.request.res, next);
+});
 //////////////////////////////////////////////////
 //                   CSRF                      //
 // ///////////////////////////////////////////////
@@ -372,12 +381,53 @@ app.get('*', function(req, res) {
 ////////////////////////////////////////////////////////////////////////////////
 //                            Start the Engine                                //
 // /////////////////////////////////////////////////////////////////////////////
-app.listen(8080, function() {
+server.listen(8080, function() {
     console.log("Social Network is up!");
 });
 ////////////////////////////////////////////////////////////////////////////////
 //                      socket.io event listenerm                             //
 // /////////////////////////////////////////////////////////////////////////////
+io.on('connection', function(socket) {
+    console.log(
+        `A socket with the id ${socket.id} just connected`
+    );
+    if (!socket.request.session.userId) {
+        return socket.disconnect(true);
+    }
+
+    const userId = socket.request.session.userId;
+    //if a user makes it here, it means they have logged into our network
+    //and they have successfully connected to the sockets
+
+    //it is a good time to go and get the last 10 chat chatMessages
+    //that means we need to make a new establishFrienship
+
+    //db.getlasttenchatmessages - then data - look at that data, etc
+    //probably users and chtas join
+
+    // db.getlasttenmessages().then (data => {
+    //     console.log("data.rows: ", data.rows);
+    //     io.sockets.emits('chatMessages', data.rows)
+    // });
+
+    //we need to listen for anew chat message being emitted..
+    socket.on('muffin', myMuffin => {
+        console.log("myMuffin on the server: ", myMuffin);
+        //emit a message to everyone connect to the social network.
+        io.socket.emit('muffinMagic', myMuffin);
+    });
+
+    socket.on('newMessage', newMsg => {
+        console.log("newMessage from chat.js component", newMsg);
+        //we would want to lok up the user that sent the message
+        console.log("userId in newMessage", userId);
+        //do a db query to look up info about user;
+        //we want to do a dv query to store new chat message into chat table
+        //we want to build up a chat message object (that looks liek chat message)
+        //objects we logged in getlasttenmessages
+    });
+    /* ... */
+});
 // io.on("connection", socket => {
 //     //connected
 //     console.log(

@@ -93,3 +93,7 @@ button.simpleButton {
     margin-top: 5px;
     margin-right: 1px;
 }
+div.chat-container {
+    height: 300px;
+    overflow-y: scroll;
+}

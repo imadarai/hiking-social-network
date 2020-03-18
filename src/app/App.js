@@ -7,6 +7,7 @@ import Uploader from "./Uploader.js";
 import BioEditor from "./BioEditor.js";
 import OtherProfile from "./OtherProfile.js";
 import UserSearch from "./UserSearch";
+import Chat from "./ChatEncounter.js"
 
 export default class App extends React.Component {
     constructor(props) {
@@ -65,6 +66,7 @@ export default class App extends React.Component {
                     />
                     <Route path="/userprofile/:id" component={OtherProfile} />
                     <Route path="/usersearch" component={UserSearch} />
+                    <Route path="/chat" component={Chat} />
                 </BrowserRouter>
                 { this.state.uploaderVisible &&
                         <Uploader

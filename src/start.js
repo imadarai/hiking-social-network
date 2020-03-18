@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Welcome from './welcome/Welcome';
 import App from "./app/app";
+import { init } from "./socket";
 ///////////////////////////////////////////////////////////////////////////////
 //                             REDUX MIDDLEWARE                               //
 // /////////////////////////////////////////////////////////////////////////////
@@ -22,6 +23,7 @@ if (location.pathname === "/welcome") {
     component = <Welcome />;
 
 } else {
+    init(store);
     component = (
         <Provider store={store}>
             <App />
