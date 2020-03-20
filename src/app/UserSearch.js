@@ -24,21 +24,23 @@ export default function UserSearch() {
     );
 
     return (
-        <div>
-            <input className="search" onChange={e => setSearch(e.target.value)} defaultValue={search} type ="text" placeholder="Search Here"/>
-            {users && (
-                users.map(user => (
-                    <div key={user.id}>
-                        <Link to={`/userprofile/${user.id}`}>
-                            <ProfilePic
-                                first ={user.first}
-                                last = {user.last}
-                                url = {user.image_url}
-                            />
-                        </Link>
-                    </div>
-                ))
-            )}
+        <div className="find-buddies-main animated fadeIn">
+            <input onChange={e => setSearch(e.target.value)} defaultValue={search} type ="text" placeholder="Search Here"/>
+            <div className="all-buddies">
+                {users && (
+                    users.map(user => (
+                        <div className="each-buddy" key={user.id}>
+                            <Link to={`/userprofile/${user.id}`}>
+                                <ProfilePic
+                                    first ={user.first}
+                                    last = {user.last}
+                                    url = {user.image_url}
+                                />
+                            </Link>
+                        </div>
+                    ))
+                )}
+            </div>
         </div>
     );
 }

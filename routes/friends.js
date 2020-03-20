@@ -54,12 +54,14 @@ app.post("/friendStatus/:id", async (req, res) => {
             await database.deleteFriendship(req.params.id, req.session.userId);
             res.json({
                 friendship: false,
-                buttonText: "Connect"
+                buttonText: "Connect",
+                success: true
             });
         } else if (req.body.friendship === "pending") {
             await database.establishFriendship(req.params.id, req.session.userId);
             res.json({
                 friendship: true,
+                success:true,
                 buttonText: "Disconnect"
             });
         }
@@ -67,7 +69,8 @@ app.post("/friendStatus/:id", async (req, res) => {
             await database.deleteFriendship(req.params.id, req.session.userId);
             res.json({
                 friendship: false,
-                buttonText: "Connect"
+                buttonText: "Connect",
+                success: true
             });
         }
     } catch (err) {

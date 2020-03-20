@@ -15,6 +15,7 @@ export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
+        this.whatToRender = this.whatToRender.bind(this);
     }
 
     async componentDidMount() {
@@ -23,6 +24,14 @@ export default class App extends React.Component {
             this.setState(data);
         } catch (err) {
             console.log("Error in getting User Information axios use/info: ",  err);
+        }
+    }
+
+    whatToRender (){
+        if (location.pathname == "/chat") {
+            this.setState({
+                renderChat: true,
+            });
         }
     }
 
@@ -87,8 +96,8 @@ export default class App extends React.Component {
                                             }
                                         </div>
                                         <div className ="app-content">
-
-                                            
+                                            { this.state.renderChat &&
+                                                <Chat /> }
                                         </div>
                                     </div>
                                 </div>

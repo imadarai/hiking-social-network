@@ -45,12 +45,12 @@ export default class BioEditor extends React.Component {
                     </div>
                 }
                 { !this.props.bio && !this.state.bioEditorInvisible &&
-                        <button onClick={this.showEditForm}>Add Bio</button>
+                        <button className="bio" onClick={this.showEditForm}>Add Bio</button>
                 }
                 { this.state.bioEditorInvisible &&
-                    <div className ="editing-bio">
-                        <textarea onChange={this.captureBio} name ="newBio" placeholder="please enter your bio here"/><br/>
-                        <button onClick={this.saveBio}>Save bio</button>
+                    <div className ="visible-bio">
+                        <textarea className ="enter-bio" onChange={this.captureBio} name ="newBio" placeholder="please enter your bio here"/><br/>
+                        <button className="bio" onClick={this.saveBio}>Save bio</button>
                     </div>
                 }
             </div>

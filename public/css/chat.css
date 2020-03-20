@@ -1,0 +1,20 @@
+div.chat-main {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    padding: 30px;
+}
+div.chat-container {
+    border: 1px dotted #004aad;
+}
+div.each-message {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    align-content: flex-start;
+    padding: 5px;
+    margin-left: 10px;
+}
+textarea.chat {
+    border: 1px solid #004aad;
+}

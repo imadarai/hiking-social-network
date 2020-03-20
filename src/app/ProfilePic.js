@@ -6,7 +6,7 @@ export default function({url, first, last, openUploader}) {
     // };
 
     return (
-        <div>
+        <div className="profile-card">
             <img className="profile-pic"
                 src={url || "../images/profilepic.png"}
                 alt={`${first} ${last}`}

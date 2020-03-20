@@ -14,10 +14,13 @@ export function getListOfFriends() {
     });
 }
 export async function endFriendship(userId) {
+    console.log("runnign end friendship in actions.js");
     let disconnect = await axios.post(`/friendStatus/${userId}`, {
         friendship: true
     });
+
     if (disconnect.data.success) {
+        console.log("handing over to reducer in endFriendship");
         return {
             type: "DISCONNECT_FRIENDS",
             data: userId

@@ -1,0 +1,35 @@
+div.find-buddies-main{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: center;
+    margin-top: 30px;
+}
+div.all-buddies {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    align-content: center;
+}
+div.each-buddy {
+    padding: 20px;
+}
+div.all-friends {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: center;
+}
+div.current-friends {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    align-content: center;
+}
+div.pending-friends {
+    margin-top: 30px;
+}

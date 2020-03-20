@@ -31,40 +31,40 @@ class Chat extends React.Component {
     componentDidMount() {}
     componentDidUpdate() {
         this.elemRef.current.scrollTop = this.elemRef.current.scrollHeight- this.elemRef.current.clientHeight;
+        console.log(this.props);
     }
 
     render() {
         return (
-            <div>
-                <h1>Chatbox</h1>
-                <div>
+            <div className = "animated fadeIn">
+                <h2>Global Chat</h2>
+                <div className= "chat-main">
                     <div className ="chat-container" ref={this.elemRef}>
                         {this.props.chatMessages &&
                             this.props.chatMessages.map(chat => (
-                                <div key={chat.msg_id}>
+                                <div className="each-message" key={chat.msg_id}>
                                     <Link to={`/userprofile/${chat.user_id}`}>
-                                        {chat.first + " " + chat.last + " at "}
+                                        {chat.first + " " + chat.last}
                                     </Link>
                                     <div>
                                         <img className="chat-avatar"
                                             url={chat.image_url}
-                                            username={chat.username}
                                         />
-                                        {chat.message}
+                                        {":" + " " + chat.message}
                                     </div>
                                 </div>
                             ))}
                     </div>
                     <textarea
+                        className = "chat"
                         name="chat"
                         id=""
+                        placeholder ="Enter your message here"
                         value={this.state.chat}
-                        cols="30"
-                        rows="10"
                         onChange={e => this.handleChange(e)}
                         onKeyPress={e => this.keyPressed(e)}
-                    />
-                    <button onClick={() => this.submit()}>
+                    ></textarea>
+                    <button className="bio" onClick={() => this.submit()}>
                         Submit
                     </button>
                 </div>

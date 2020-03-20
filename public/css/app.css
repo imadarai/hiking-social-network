@@ -57,8 +57,15 @@ div.app-profile {
     border-right: 1px solid #fdda00;
     width: 20%;
 }
+div.profile-card {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: center;
+}
 div.pp-hover {
-    
+
 }
 div.app-content {
     background-color: white;

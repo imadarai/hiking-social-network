@@ -27,7 +27,7 @@ export default class OtherProfile extends React.Component {
             return <img className="loading" src="../images/loading.gif" alt="Loading..." />;
         }
         return(
-            <div className="public-profile-container">
+            <div className="find-buddies-main animated fadeIn">
                 <ProfilePic
                     first ={this.state.first}
                     last = {this.state.last}

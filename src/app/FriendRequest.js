@@ -29,7 +29,7 @@ export default class FriendRequest extends React.Component {
     }
     render() {
         return (
-            <button onClick={this.handleFriendship}>{this.state.buttonText}</button>
+            <button className="bio" onClick={this.handleFriendship}>{this.state.buttonText}</button>
         );
     }
 }
