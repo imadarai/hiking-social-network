@@ -96,8 +96,7 @@ export default class App extends React.Component {
                                             }
                                         </div>
                                         <div className ="app-content">
-                                            { this.state.renderChat &&
-                                                <Chat /> }
+                                            
                                         </div>
                                     </div>
                                 </div>
