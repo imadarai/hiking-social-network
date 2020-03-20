@@ -12,7 +12,7 @@ const path = require('path');
 
 const diskStorage = multer.diskStorage({
     destination: function (req, file, callback) {
-        callback(null, __dirname + '/uploads');
+        callback(null, `${process.cwd()}/uploads`);
     },
     filename: function (req, file, callback) {
         uidSafe(24).then(function(uid) {

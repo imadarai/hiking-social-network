@@ -19,12 +19,14 @@ export default function({ id, updateImage, closeUploaderModal }) {
         }
     }
     return (
-        <div>
-            <div id="uploader-close-container">
-                <span onClick={closeUploaderModal} id="uploader-close-button">X</span>
+        <div className= "uploader-overlay">
+            <div className="close-uploader">
+                <span onClick={closeUploaderModal}><img src="../images/close-button.png"></img></span>
             </div>
-            <input onChange={readFile} type="file" name="file" id="file" className="inputfile" />
-            <label id="select-image" htmlFor="file">select image</label>
+            <div className="image-form">
+                <h3>Please select and Image to Upload</h3>
+                <input onChange={readFile} type="file" name="file" id="file" className="inputfile" />
+            </div>
         </div>
     );
 }

@@ -61,8 +61,8 @@ export default class ResetPassword extends React.Component {
             <div>
                 { currentDisplay == 1 &&
                     <div>
-                        <div className ="auth-container">
-                            <h2>Reset Password</h2>
+                        <div className ="auth-container animated fadeIn">
+                            <h3>Reset Password</h3>
                             <p className="error"> { this.state.error } </p>
                             <form className = "form-container">
                                 <input onChange={this.handleChange} type="text" name="email" placeholder="Email"/>
@@ -72,8 +72,8 @@ export default class ResetPassword extends React.Component {
                     </div>}
                 { currentDisplay == 2 &&
                     <div>
-                        <div className ="auth-container">
-                            <h2>Check your Email and Enter the Code below</h2>
+                        <div className ="auth-container animated fadeIn">
+                            <h3>Check your Email and Enter the Code below</h3>
                             <p className="error"> { this.state.error } </p>
                             <form className = "form-container">
                                 <input onChange={this.handleChange} type="text" name="secretcode" placeholder="Reset Code"/>
@@ -85,8 +85,8 @@ export default class ResetPassword extends React.Component {
                     </div>}
                 { currentDisplay == 3 &&
                     <div>
-                        <div className ="auth-container">
-                            <h2>Your Password has been succesfully updated.</h2>
+                        <div className ="auth-container animated fadeIn">
+                            <h3>Your Password has been succesfully updated.</h3>
                             <Link to="/login">Log in</Link>
                         </div>
                     </div>}

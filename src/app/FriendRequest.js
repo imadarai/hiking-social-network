@@ -5,7 +5,7 @@ export default class FriendRequest extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
-        this.submit = this.submit.bind(this);
+        this.handleFriendship = this.handleFriendship.bind(this);
     }
     handleFriendship() {
         axios.post(`/friendStatus/${this.props.requestId}`, {

@@ -1,13 +1,15 @@
 import React from "react";
 import axios from "../axios";
 import { BrowserRouter, Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Profile from "./Profile.js";
 import ProfilePic from "./ProfilePic.js";
 import Uploader from "./Uploader.js";
 import BioEditor from "./BioEditor.js";
 import OtherProfile from "./OtherProfile.js";
 import UserSearch from "./UserSearch";
-import Chat from "./ChatEncounter.js"
+import Friends from "./FriendList";
+import Chat from "./Chat.js";
 
 export default class App extends React.Component {
     constructor(props) {
@@ -35,50 +37,69 @@ export default class App extends React.Component {
                         exact path="/"
                         render={() => {
                             return (
-                                <div>
-                                    <h1>Welcome!</h1>
-                                    <Profile
-                                        first = {this.state.first}
-                                        last = {this.state.last}
+                                <div className="app-main">
 
-                                        profilePic ={
-                                            <ProfilePic
-                                                first ={this.state.first}
+                                    <div className ="app-header animated fadeInDown">
+                                        <div className="app-logo"></div>
+                                        <div className="app-nav">
+                                            <Link to="/usersearch"><button className="nav-button">Find Hikers</button></Link>
+                                            <Link to="/friends"><button className="nav-button">My Buddies</button></Link>
+                                            <Link to="/chat"><button className="nav-button">Global Chat</button></Link>
+                                            <a href="/logout"><button className="nav-button">Logout</button></a>
+                                        </div>
+                                    </div>
+
+                                    <div className = "app-body">
+                                        <div className = "app-profile">
+                                            <Profile
+                                                first = {this.state.first}
                                                 last = {this.state.last}
-                                                url = {this.state.profilePic}
-                                                openUploader={() => this.setState({
-                                                    uploaderVisible: true
-                                                })}
+
+                                                profilePic ={
+                                                    <ProfilePic
+                                                        first ={this.state.first}
+                                                        last = {this.state.last}
+                                                        url = {this.state.profilePic}
+                                                        openUploader={() => this.setState({
+                                                            uploaderVisible: true
+                                                        })}
+                                                    />
+                                                }
+                                                bioEditor={
+                                                    <BioEditor
+                                                        bio={this.state.bio}
+                                                        setBio={newBio => this.setState({
+                                                            bio: newBio
+                                                        })}
+                                                    />
+                                                }
                                             />
-                                        }
-                                        bioEditor={
-                                            <BioEditor
-                                                bio={this.state.bio}
-                                                setBio={newBio => this.setState({
-                                                    bio: newBio
-                                                })}
-                                            />
-                                        }
-                                    />
+                                            { this.state.uploaderVisible &&
+                                                    <Uploader
+                                                        id={this.state.userId}
+                                                        updateImage={url => this.setState({
+                                                            profilePic: url
+                                                        })}
+                                                        closeUploaderModal={ () => this.setState({
+                                                            uploaderVisible: false
+                                                        })}
+                                                    />
+                                            }
+                                        </div>
+                                        <div className ="app-content">
+
+                                            
+                                        </div>
+                                    </div>
                                 </div>
                             );
                         }}
                     />
                     <Route path="/userprofile/:id" component={OtherProfile} />
                     <Route path="/usersearch" component={UserSearch} />
+                    <Route path="/friends" component={Friends} />
                     <Route path="/chat" component={Chat} />
                 </BrowserRouter>
-                { this.state.uploaderVisible &&
-                        <Uploader
-                            id={this.state.userId}
-                            updateImage={url => this.setState({
-                                profilePic: url
-                            })}
-                            closeUploaderModal={ () => this.setState({
-                                uploaderVisible: false
-                            })}
-                        />
-                }
             </div>
         );
     }

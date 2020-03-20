@@ -166,3 +166,57 @@ module.exports.deleteFriendship = function deleteFriendship(requestId, userId) {
         [requestId, userId]
     );
 };
+///////////////////////////////////////////////////////////////////////////////
+//                            Get All Friends Request                        //
+///////////////////////////////////////////////////////////////////////////////!
+module.exports.getAllFriends = function getAllFriends(userId) {
+    return db.query(
+        `SELECT users.id, first, last, image_url, accepted
+        FROM friendships
+        JOIN users
+        ON (accepted = false AND receiver_id = $1 AND sender_id = users.id)
+        OR (accepted = true AND receiver_id = $1 AND sender_id = users.id)
+        OR (accepted = true AND sender_id = $1 AND receiver_id = users.id)`,
+        [userId]
+    );
+};
+///////////////////////////////////////////////////////////////////////////////
+//                                  CHAT                                      //
+///////////////////////////////////////////////////////////////////////////////!
+/////////////////////////////--RECENT MESSAGES--////////////////////////////////
+module.exports.getMostRecentChatMsgs = function getMostRecentChatMsgs() {
+    return db.query(
+        `SELECT chat.id AS msg_id, message, users.id AS user_id,
+        first, last, image_url, chat.created_at
+        FROM chat
+        JOIN users
+        ON sender_id = users.id
+        ORDER BY msg_id DESC LIMIT 10`);
+};
+/////////////////////////////////--Update Chat--////////////////////////////////
+module.exports.updateChat = function updateChat(msg, senderId) {
+    return db.query(
+        `INSERT INTO chat (sender_id, message) VALUES($2, $1) RETURNING id`,
+        [msg, senderId]
+    );
+};
+/////////////////////////////--Check Chat Update--///////////////////////////////
+module.exports.checkChatUpdate = function checkChatUpdate(chatId) {
+    return db.query(
+        `SELECT chat.id AS msg_id, message, users.id AS user_id,
+        first, last, image_url, chat.created_at
+        FROM chat
+        JOIN users
+        ON sender_id = users.id
+        WHERE chat.id = $1`,
+        [chatId]
+    );
+};
+/////////////////////////////--Get Online Users--///////////////////////////////
+module.exports.getOnlineUsers = function getOnlineUsers(userArr) {
+    return db.query(
+        `SELECT id, first, last, image_url FROM users
+        WHERE id = ANY($1)`,
+        [userArr]
+    );
+};

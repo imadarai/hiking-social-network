@@ -1,0 +1,66 @@
+div.app-main {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+div.app-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    align-content: flex-start;
+    border-bottom: 10px solid #fdda00;
+    height: 150px;
+}
+div.app-logo {
+    background-image: url(/images/logo.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    width: 233px;
+    height: 140px;
+    margin-left: 15px;
+
+}
+div.app-nav {
+    margin-top: 115px;
+    float: right;
+}
+button.nav-button {
+    display: inline-block;
+    background-color: #fdda00;
+    width: 100px;
+    padding: 8px;
+    color: #004aad;
+    border: 1px solid #fdda00;
+    text-align: center;
+    outline: none;
+    text-decoration: none;
+}
+button.nav-button:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+div.app-body {
+    display: flex;
+    flex-wrap: wrap;
+    height: 81vh;
+}
+div.app-profile {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: center;
+    background-color: whitesmoke;
+    border-right: 1px solid #fdda00;
+    width: 20%;
+}
+div.pp-hover {
+    
+}
+div.app-content {
+    background-color: white;
+    width: 80%;
+}

@@ -53,8 +53,8 @@ export default class Registration extends React.Component {
         return (
             <div>
                 <div className ="auth-container">
-                    <h2>Registration</h2>
-                    <p> {this.state.error} </p>
+                    <h3>Register Now!</h3>
+                    <p className="error"> {this.state.error} </p>
                     <form className = "form-container">
                         <input onChange={this.handleChange} name="first" type ="text" placeholder="First Name" required />
                         <input onChange={this.handleChange} name="last" type ="text" placeholder="Last Name" required/>

@@ -1,0 +1,36 @@
+div.bio-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: center;
+    width: 200px;
+    height: auto;
+    background-color: wheat;
+}
+div.visible-bio {
+    width: 80px;
+}
+p.user-bio {
+    font-family: sans-serif;
+    font-size: 12px;
+}
+
+button.bio {
+    display: inline-block;
+    background-color: #fff;
+    width: 100px;
+    padding: 8px;
+    color: #004aad;
+    border: 1px solid #004aad;
+    text-align: center;
+    outline: none;
+    text-decoration: none;
+    margin-top: 10px;
+}
+button.bio:hover {
+    border: 1px solid #fdda00;
+    background-color: #fff;
+    color: #ff914d;
+    cursor: pointer;
+}

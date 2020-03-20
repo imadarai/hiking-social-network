@@ -2,6 +2,13 @@ const { app } = require('../index');
 ////////////////////////////////--UTILS--//////////////////////////////////////
 const database = require('../utils/db.js');
 
+////////////////////////--GET ALL FRIENDS LIST  --//////////////////////////////
+app.get("/friends-list", async (req, res) => {
+    const friendsList = await database.getAllFriends(req.session.userId);
+    res.json({
+        friends: friendsList.rows
+    });
+});
 /////////////////////////////--Friendship Status--//////////////////////////////////
 app.get("/friendStatus/:id", async (req, res) => {
     try {

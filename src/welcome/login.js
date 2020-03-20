@@ -38,8 +38,8 @@ export default class Login extends React.Component {
     render () {
         return (
             <div>
-                <div className ="auth-container">
-                    <h2>Login</h2>
+                <div className ="auth-container animated fadeIn">
+                    <h3>Login</h3>
                     <p className="error"> { this.state.error } </p>
                     <form className = "form-container">
                         <input onChange={this.handleChange} name="email" type ="email" placeholder="Email" required/>

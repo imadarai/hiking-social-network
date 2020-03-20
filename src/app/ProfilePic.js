@@ -12,7 +12,7 @@ export default function({url, first, last, openUploader}) {
                 alt={`${first} ${last}`}
                 onClick={openUploader}
             />
-            <p>{`${first} ${last}`}</p>
+            <h3>{`${first} ${last}`}</h3>
         </div>
     );
 }
