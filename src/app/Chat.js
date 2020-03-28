@@ -31,7 +31,6 @@ class Chat extends React.Component {
     componentDidMount() {}
     componentDidUpdate() {
         this.elemRef.current.scrollTop = this.elemRef.current.scrollHeight- this.elemRef.current.clientHeight;
-        console.log(this.props);
     }
 
     render() {
