@@ -39,9 +39,8 @@ Last but not least you can view your list of friends and friend requests.
 
 
 ## Future Features
-* Add Registration/Login Functionality
-* Allow Tags and images to be filtered by tags or users
-* Simple thumbs up or thumbs down voting system
+* Add a trips section where users can create, search and join Trips
+* More fields to personal Profile
 
 
 
