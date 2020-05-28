@@ -1,8 +1,5 @@
 # Annapurna: a mock social network for Hikers 
 
-## Website 
-
-Coming soon.
 
 ## Tech Stack
 
